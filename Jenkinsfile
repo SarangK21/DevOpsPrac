@@ -29,7 +29,19 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t ${IMAGE_NAME} .'
+                sh '''
+                    echo "Jenkins PATH:"
+                    echo $PATH
+
+                    echo "Docker location:"
+                    which docker || true
+
+                    echo "Docker version:"
+                    docker --version || true
+
+                    echo "Python location:"
+                    which python3
+                '''
             }
         }
 
