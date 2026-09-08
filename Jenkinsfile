@@ -17,7 +17,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'pip3 install -r requirements.txt'
+                sh 'python3 -m pip install -r requirements.txt'
             }
         }
 
@@ -30,17 +30,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh '''
-                    echo "Jenkins PATH:"
-                    echo $PATH
-
-                    echo "Docker location:"
-                    which docker || true
-
-                    echo "Docker version:"
-                    docker --version || true
-
-                    echo "Python location:"
-                    which python3
+                    docker build -t ${IMAGE_NAME} .
                 '''
             }
         }
@@ -60,7 +50,6 @@ pipeline {
             steps {
                 sh '''
                     echo "Waiting for application..."
-
                     sleep 5
 
                     curl --fail http://localhost:5001/health
